@@ -1,0 +1,11 @@
+Hats Store - We sell the best hats in the city. 
+Ps. We're better than Lidz
+
+Inventory: 
+
+Sombrero,
+Santa Claus Hat
+Buret
+Baseball cap
+Fedora
+TopHat

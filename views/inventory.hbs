@@ -1,0 +1,86 @@
+{{#each inventory}}
+
+    <li id="{{this.id}}">
+        <p class="product_name" data-num="{{this.id}}">{{this.product_name}}</p>
+        <button id="deleteButton_{{this.id}}" data-num="{{this.id}}">X</button>
+    </li>
+
+{{/each}}
+
+<input id="newVal" type="text"><button id="addItem">+</button>
+
+
+
+<script>
+$('body').on('dblclick', '.product_name', function() {
+    var index = $(this).data('num');
+    $(`#deleteButton_${index}`).text('yes')
+    .addClass('updateButton')
+    .attr('id', `updateButton_${index}`);
+
+    var currValue = $(this).text();
+    $(this).replaceWith(`<input type="text" value="${currValue}" />`);
+} );
+
+
+
+$('body').on('click', '.updateButton', function(){
+    var id = $(this).data('num');
+    var value = $(this).parent().find('input').val();
+    console.log(value);
+
+    $.ajax({
+        method: "PUT",
+        url:`/api/inventory/${id}`,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+            name: value
+        })
+    });
+
+    $(this).attr('id', `deleteButton_${id}`).text('X');
+})
+
+
+
+
+$('body').on('click','#deleteButton', function()
+{
+    var id = $(this).data('num');
+    console.log('delete button clicked on' + id);
+
+                $.ajax({
+                    method: "DELETE",
+                    url: `/api/inventory/${id}`
+                });
+           
+});
+
+$('body').on('click', '#addItem', ()=> {
+    let value = $('#newVal').val();
+    $.ajax({
+        method: "POST",
+        url:`/api/inventory/`,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
+            name: value, 
+            description: "This is the best new hat on the market", 
+            price: 1.00,                    
+            cost: 0.50
+        })
+    });
+
+
+   console.log($('#newVal').val())
+})
+
+
+
+
+</script>
